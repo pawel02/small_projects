@@ -11,19 +11,19 @@ function calculateWinner(squares) {
       [0, 4, 8],
       [2, 4, 6],
     ];
-    for (let i = 0; i < lines.length; i++) {
-      const [a, b, c] = lines[i];
+    for (const line of lines) {
+      const [a, b, c] = line;
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
         return squares[a];
       }
     }
     return null;
-  }
+}
 
 function Square(props)
 {
     return (
-        <button className = "square" onClick={props.onClick}>
+        <button className = {"square " + props.bg} onClick={props.onClick}>
             {props.value}
         </button>
     )
@@ -64,9 +64,20 @@ class Board extends React.Component
 
     renderSquare(i)
     {
+        let bg;
+        if ( this.state.squares[i] === 'O')
+        {
+            bg = 'square-o';
+        }
+        else if (this.state.squares[i] === 'X')
+        {
+            bg = 'square-x';
+        }
+
         return <Square 
         value={this.state.squares[i]}
-        onClick={() => { this.handleClick(i); }} />
+        onClick={() => { this.handleClick(i); }} 
+        bg={bg}/>
     }
 
     render() {

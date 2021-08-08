@@ -83,7 +83,7 @@ class Game extends React.Component
               'Go to game start';
             return (
               <li key={move}>
-                <button onClick={() => this.jumpTo(move)}>{desc}</button>
+                <button className="basic-button history-button" onClick={() => this.jumpTo(move)}>{desc}</button>
               </li>
             );
         });
@@ -105,7 +105,7 @@ class Game extends React.Component
           <div className="game">
             <div className="game-board">
             <p className="status">{status}</p>
-            <button className = "start-new-game" onClick={() => this.restartGame()}>Start a new game</button>
+            <button className = "basic-button start-new-game" onClick={() => this.restartGame()}>Start a new game</button>
               <Board 
                 squares={current.squares}
                 onClick={(i) => this.handleClick(i)}

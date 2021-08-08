@@ -29,7 +29,8 @@ body {
 .status {
   margin-bottom: 10px;
 }
-.start-new-game
+
+.basic-button
 {
   background:transparent;
   border:1px solid white;
@@ -38,15 +39,24 @@ body {
   cursor:pointer;
   outline: none;
   color:white;
-  margin:15px 0;
   font-size:16px;
   transition:all 0.3s;
+}
+
+.start-new-game
+{
+  margin:15px 0;
   width:100%;
 }
-.start-new-game:hover
+.basic-button:hover
 {
   background-color: white;
   color:black;
+}
+.history-button
+{
+  margin:5px 0;
+  width:150px;
 }
 
 .board

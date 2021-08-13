@@ -1,0 +1,23 @@
+{
+  "name": "discord_game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint ./src/**.js --fix"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/builders": "^0.5.0",
+    "@discordjs/rest": "0.1.0-canary.0",
+    "canvas": "^2.8.0",
+    "discord-api-types": "^0.22.0",
+    "discord.js": "^13.1.0",
+    "node": "16.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^16.6.1",
+    "eslint": "^7.32.0"
+  }
+}

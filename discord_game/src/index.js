@@ -36,16 +36,20 @@ client.once('ready', () => {
     // For production this should be using applicationCommands with the clientID but that will only
     // update the commands every hour instead of instantly which is needed for development
     client.guilds.cache.each(guild => {
+        guild.channels.cache.each(channel => {
+            if (channel.type === 'GUILD_TEXT') {
+                channel.send('Some welcome message');
+            }
+        });
+
         (async () => {
             try {
-                console.log('Started refreshing application (/) commands.');
-
                 await rest.put(
                     Routes.applicationGuildCommands(CLIENT_ID, guild.id),
                     { body: commands },
                 );
 
-                console.log('Successfully reloaded application (/) commands.');
+                console.log('Commands reloaded');
             }
             catch (error) {
                 console.error(error);

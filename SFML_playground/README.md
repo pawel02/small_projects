@@ -9,7 +9,7 @@ Before building the project you will need to make sure that you have all of the 
 \
 You will then need to build the SFML library which you can do by following the [link](https://www.sfml-dev.org/tutorials/2.5/compile-with-cmake.php)\
 **After doing so make sure that you have the correct paths set in the CMakeLists.txt you shouldn't need to make changes on windows but you might need to on Linux**\
-\
+
 
 Then you can run the following command\
 `cmake -S . -B ./build`

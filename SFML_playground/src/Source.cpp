@@ -1,16 +1,10 @@
+#include <iostream>
+#include <chrono>
+
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
-#include <cstdio>
-#include "./EventSystem/event.hpp"
-
-EventsManager eventManager;
-
-
-void test(std::shared_ptr<BasicEvent> ev)
-{
-    printf("Hello world\n");
-    eventManager.unsubscribe(sf::Event::KeyPressed, test);
-}
+#include "./EventSystem/KeyboardEvent.hpp"
+#include "Controller/Paddle.hpp"
 
 int main()
 {
@@ -18,52 +12,58 @@ int main()
     const int windowHeight = 600;
 
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "SFML window");
+    window.setFramerateLimit(60.0f);
 
-    // create a basic sprite
-    sf::Texture texture;
-    if (!texture.loadFromFile("../res/wood.jpg"))
-    {
-        printf("Could not load the texture %s", "res/wood.jpg");
-        return -1;
-    }
-    texture.setSmooth(true);
+    EventsManager eventManager;
+    Paddle paddle{ 
+        {windowWidth, windowHeight}, 
+        20, 
+        {20, 100}, 
+        &eventManager, 
+        1, 
+        {255, 155, 155, 255} };
     
-    sf::Sprite sprite;
-    sprite.setTexture(texture);
-    
-    const sf::IntRect spriteDimensions = sprite.getTextureRect();
-    const int desiredSpriteWidth = 20;
-    const int desiredSpriteHeight = 20;
-
-    constexpr int spritePositionX = (windowWidth / 2) - (desiredSpriteWidth / 2);
-    constexpr int spritePositionY = (windowHeight / 2) - (desiredSpriteHeight / 2);
-
-    sprite.setScale(1.0f / (static_cast<float>(spriteDimensions.width) / static_cast<float>(desiredSpriteWidth)), 
-            1.0f / (static_cast<float>(spriteDimensions.height) / static_cast<float>(desiredSpriteHeight)));
-    
-    printf("sprite width %f\n", static_cast<double>(sprite.getTextureRect().width) * sprite.getScale().x);
-    printf("sprite height %f\n", static_cast<double>(sprite.getTextureRect().height) * sprite.getScale().y);
-
-
-    sprite.setPosition(spritePositionX, spritePositionY);
-
-    // Allow for moving left and right (This requires a whole event system to capture the user input)
-    // Allow jumping behaviour (This requires a whole event system to capture the user input)
-
-    eventManager.subscribe(sf::Event::KeyPressed, test);
+    sf::Clock clock;
+    sf::Int32 currTime = clock.getElapsedTime().asMicroseconds();
 
     while (window.isOpen())
     {
         sf::Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
-                window.close();
+            // send the event to the eventManager
+            switch (event.type)
+            {
+                case (sf::Event::Closed):
+                {
+                    window.close();
+                    break;
+                }
+                case (sf::Event::KeyPressed):
+                {
+                    eventManager.dispatch(event.type, std::make_shared<KeyPressedEvent>(event.key.code));
+                    break;
+                }
+                case (sf::Event::KeyReleased):
+                {
+                    eventManager.dispatch(event.type, std::make_shared<KeyReleasedEvent>(event.key.code));
+                    break;
+                }
+                default:
+                {
+                    eventManager.dispatch(event.type, std::make_shared<BasicEvent>());
+                }
 
-            eventManager.dispatch(event.type, std::make_shared<BasicEvent>());
+            }
         }
+
         window.clear();
-        window.draw(sprite);
+
+        // calculate deltaTime
+        float deltaTime = static_cast<float>(clock.getElapsedTime().asMicroseconds() - currTime) / 1000.0f;
+        currTime = clock.getElapsedTime().asMicroseconds();
+
+        window.draw(paddle.update(deltaTime));
         window.display();
     }
     return EXIT_SUCCESS;

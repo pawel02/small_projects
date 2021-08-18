@@ -1,11 +1,9 @@
 #pragma once
-#include <thread>
 #include <vector>
 #include <unordered_map>
 #include <functional>
 #include <memory>
 #include <algorithm>
-#include <iostream>
 #include <SFML/Window.hpp>
 
 class BasicEvent
@@ -19,7 +17,6 @@ private:
 
 /*
 This manager will fire off any functions that are subscribed to a certain type of event
-Each event is fired off in its own thread (so thread synchronization will be important)
 */
 class EventsManager
 {
@@ -44,6 +41,9 @@ public:
 		}
 	}
 
+	/*
+	 *Unsubscribes from the specified event
+	 */
 	void unsubscribe(sf::Event::EventType eventType, func handler)
 	{
 		const std::unordered_map<sf::Event::EventType, callbackContainer>::iterator element = callbacks.find(eventType);
@@ -58,14 +58,13 @@ public:
 			});
 			if (found != element->second->end())
 			{
-				std::cout << "unsubscribed\n";
 				element->second->erase(found);
 			}
 		}
 	}
 
 	/*
-	 * Notifies all the subscribers of the event on separate threads
+	 * Notifies all the subscribers of the event
 	 */
 	void dispatch(sf::Event::EventType eventType, std::shared_ptr<BasicEvent> ev)
 	{
@@ -74,8 +73,7 @@ public:
 		{
 			for (auto& func : *(element->second))
 			{
-				std::thread t(func, ev);
-				t.detach();
+				func(ev);
 			}
 		}
 	}

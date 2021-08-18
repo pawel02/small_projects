@@ -1,3 +1,4 @@
 [submodule "SFML_playground/SFML"]
 	path = SFML_playground/SFML
 	url = https://github.com/SFML/SFML.git
+	ignore = dirty

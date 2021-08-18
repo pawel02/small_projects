@@ -32,7 +32,7 @@ Paddle::~Paddle() noexcept
 
 void Paddle::initialize() noexcept
 {
-	// subscribet to keypressed events
+	// subscribe to keypressed events
 	eventsManager->subscribe(sf::Event::KeyPressed, [&](std::shared_ptr<BasicEvent> ev) {
 		handlePressed(static_cast<KeyPressedEvent*>(ev.get()));
 	});

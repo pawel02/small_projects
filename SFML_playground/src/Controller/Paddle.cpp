@@ -5,7 +5,7 @@
 #include "Paddle.hpp"
 
 Paddle::Paddle(
-	const sf::Vector2f& windowSize, 
+	const sf::Vector2i& windowSize, 
 	const int& startX, 
 	const sf::Vector2i& paddleSize,
 	EventsManager* eventsManager, 
@@ -36,7 +36,6 @@ void Paddle::initialize() noexcept
 	});
 
 	// Create the sprite and set its correct position
-	sf::Texture texture;
 	if (!texture.create(paddleSize.x, paddleSize.y))
 	{
 		return;
@@ -44,27 +43,15 @@ void Paddle::initialize() noexcept
 
 	const int pixelAmount = paddleSize.x * paddleSize.y * 4;
 	std::vector<sf::Uint8> pixels = std::vector<sf::Uint8>(pixelAmount);
-	for (size_t i = 0; i < pixelAmount; i++)
-	{
-		if (i % 4 == 0)
-		{
-			pixels[i] = color.a;
-		}
-		else if (i % 3 == 0)
-		{
-			pixels[i] = color.b;
-		}
-		else if (i % 2 == 0)
-		{
-			pixels[i] = color.g;
-		}
-		else
-		{
-			pixels[i] = color.r;
-		}
-	}
 
-	texture.update(pixels.data());
+	for (size_t i = 0; i < pixelAmount; i+=4)
+	{
+		pixels[i]     = color.r;
+		pixels[i + 1] = color.g;
+		pixels[i + 2] = color.b;
+		pixels[i + 3] = color.a;
+	}
+	texture.update(&pixels[0]);
 
 	sprite.setTexture(texture);
 	sprite.setPosition(pos);

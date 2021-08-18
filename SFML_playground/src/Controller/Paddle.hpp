@@ -3,8 +3,10 @@
 #include "../EventSystem/KeyboardEvent.hpp"
 #include "../common/bit.hpp"
 
-#define KEY_W BIT(1)
-#define KEY_S BIT(2)
+#define KEY_W    BIT(1)
+#define KEY_S    BIT(2)
+#define KEY_UP   BIT(3)
+#define KEY_DOWN BIT(4)
 
 /*
 Class which defines a paddle that can move up and down at the specified position
@@ -13,7 +15,7 @@ class Paddle
 {
 public:
 	Paddle(
-		const sf::Vector2f& windowSize,
+		const sf::Vector2i& windowSize,
 		const int& startX,
 		const sf::Vector2i& paddleSize,
 		EventsManager* eventsManager, 
@@ -36,10 +38,11 @@ private:
 
 
 private:
+	sf::Texture texture;
 	sf::Sprite sprite;
 	sf::Color color;
 
-	sf::Vector2f windowSize;
+	sf::Vector2i windowSize;
 	sf::Vector2f pos;
 	sf::Vector2i paddleSize;
 	EventsManager* eventsManager;
@@ -47,4 +50,5 @@ private:
 	float speed = 1.0f;
 
 	char keyDown = 0x00;
+
 };

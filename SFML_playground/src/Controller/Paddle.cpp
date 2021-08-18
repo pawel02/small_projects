@@ -10,14 +10,19 @@ Paddle::Paddle(
 	const sf::Vector2i& paddleSize,
 	EventsManager* eventsManager, 
 	const float& speed,
-	const sf::Color& color) noexcept
+	const sf::Color& color,
+	char keyUp,
+	char keyDown
+	) noexcept
 	
 	:windowSize{windowSize},
 	pos{startX, (windowSize.y / 2) - (paddleSize.y / 2)},
 	paddleSize{paddleSize},
 	eventsManager{eventsManager},
 	speed{speed},
-	color{color}
+	color{color},
+	keyUp{keyUp},
+	keyDown{keyDown}
 {
 	initialize();
 }
@@ -60,11 +65,11 @@ void Paddle::initialize() noexcept
 const sf::Drawable& Paddle::update(float deltaTime) noexcept
 {
 	// move the paddle up or down limiting it to the ceilings
-	if (keyDown & KEY_W)
+	if (key & keyUp)
 	{
 		pos.y = std::max(pos.y - (speed * deltaTime), 5.0f);
 	}
-	else if (keyDown & KEY_S)
+	else if (key & keyDown)
 	{
 		pos.y = std::min(pos.y + (speed * deltaTime), windowSize.y - (paddleSize.y + 5.0f));
 	}
@@ -79,12 +84,22 @@ void Paddle::handlePressed(KeyPressedEvent* ev) noexcept
 	{
 		case 22:
 		{
-			keyDown |= KEY_W;
+			key |= KEY_W;
 			break;
 		}
 		case 18:
 		{
-			keyDown |= KEY_S;
+			key |= KEY_S;
+			break;
+		}
+		case 73:
+		{
+			key |= KEY_UP;
+			break;
+		}
+		case 74:
+		{
+			key |= KEY_DOWN;
 			break;
 		}
 	}
@@ -96,12 +111,22 @@ void Paddle::handleReleased(KeyReleasedEvent* ev) noexcept
 	{
 		case 22:
 		{
-			keyDown ^= KEY_W;
+			key ^= KEY_W;
 			break;
 		}
 		case 18:
 		{
-			keyDown ^= KEY_S;
+			key ^= KEY_S;
+			break;
+		}
+		case 73:
+		{
+			key ^= KEY_UP;
+			break;
+		}
+		case 74:
+		{
+			key ^= KEY_DOWN;
 			break;
 		}
 	}

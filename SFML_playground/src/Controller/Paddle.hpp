@@ -20,7 +20,9 @@ public:
 		const sf::Vector2i& paddleSize,
 		EventsManager* eventsManager, 
 		const float& speed,
-		const sf::Color& color) noexcept;
+		const sf::Color& color,
+		char keyUp,
+		char keyDown) noexcept;
 
 	~Paddle() noexcept;
 	
@@ -49,6 +51,7 @@ private:
 
 	float speed = 1.0f;
 
-	char keyDown = 0x00;
-
+	char key = 0x00;
+	char keyUp;
+	char keyDown;
 };

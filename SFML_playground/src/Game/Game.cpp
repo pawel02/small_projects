@@ -8,7 +8,9 @@ GameManager::GameManager(const sf::Vector2i& windowSize) noexcept
         { 20, 100 },
         &eventsManager,
         1,
-        { 255, 155, 155, 255 }
+        { 255, 155, 155, 255 },
+        KEY_W,
+        KEY_S
     },
     paddleRight{
         windowSize,
@@ -16,7 +18,9 @@ GameManager::GameManager(const sf::Vector2i& windowSize) noexcept
         { 20, 100 },
         &eventsManager,
         1,
-        { 45, 45, 155, 255 }
+        { 45, 45, 155, 255 },
+        KEY_UP,
+        KEY_DOWN
     }
 {
     initialize();

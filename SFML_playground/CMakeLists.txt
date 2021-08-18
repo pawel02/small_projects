@@ -8,7 +8,22 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
 add_compile_definitions(SFML_STATIC)
 
-add_executable(${PROJECT_NAME} src/Source.cpp)
+
+file(GLOB SOURCES 
+    PRIVATE "${PROJECT_SOURCE_DIR}/src/*.cpp"
+)
+
+file(GLOB_RECURSE EVENTSYSTEM 
+    PRIVATE "${PROJECT_SOURCE_DIR}/src/EventSystem/*.hpp"
+    PRIVATE "${PROJECT_SOURCE_DIR}/src/EventSystem/*.cpp"
+)
+
+add_executable(${PROJECT_NAME} 
+    ${SOURCES}
+    ${EVENTSYSTEM}
+)
+
+source_group("EventSystem"                FILES ${EVENTSYSTEM})
 
 target_include_directories(${PROJECT_NAME} 
     PRIVATE "${PROJECT_SOURCE_DIR}/SFML/include"

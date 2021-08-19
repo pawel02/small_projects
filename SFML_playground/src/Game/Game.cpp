@@ -9,8 +9,8 @@ GameManager::GameManager(const sf::Vector2i& windowSize) noexcept
         &eventsManager,
         1,
         { 255, 155, 155, 255 },
-        KEY_W,
-        KEY_S
+        sf::Keyboard::W,
+        sf::Keyboard::S
     },
     paddleRight{
         windowSize,
@@ -19,8 +19,16 @@ GameManager::GameManager(const sf::Vector2i& windowSize) noexcept
         &eventsManager,
         1,
         { 45, 45, 155, 255 },
-        KEY_UP,
-        KEY_DOWN
+        sf::Keyboard::Up,
+        sf::Keyboard::Down
+    },
+    ball{
+    windowSize, 
+    10,
+        {255, 0, 0},
+        0.5f,
+        &paddleLeft,
+        &paddleRight
     }
 {
     initialize();
@@ -32,7 +40,9 @@ GameManager::~GameManager() noexcept
 void GameManager::initialize() noexcept
 {
     window.setFramerateLimit(60.0f);
-    sf::Int32 currTime = clock.getElapsedTime().asMicroseconds();
+    currTime = clock.getElapsedTime().asMicroseconds();
+
+    // create the ball
 }
 
 int GameManager::gameLoop() noexcept
@@ -53,6 +63,10 @@ int GameManager::gameLoop() noexcept
                 case (sf::Event::KeyPressed):
                 {
                     eventsManager.dispatch(event.type, std::make_shared<KeyPressedEvent>(event.key.code));
+                    if (event.key.code == sf::Keyboard::Space)
+                    {
+                        hasGameStarted = true;
+                    }
                     break;
                 }
                 case (sf::Event::KeyReleased):
@@ -75,6 +89,8 @@ int GameManager::gameLoop() noexcept
 
         window.draw(paddleLeft.update(deltaTime));
         window.draw(paddleRight.update(deltaTime));
+        if (hasGameStarted)
+            window.draw(*ball.update(deltaTime).drawable);
 
         window.display();
     }

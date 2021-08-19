@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Paddle.hpp"
+#include "glm/glm.hpp"
+
 
 struct metaData
 {
@@ -30,18 +32,24 @@ public:
 	const metaData& update(float deltaTime) noexcept;
 
 private:
+	// initializes the ball in the middle of the screen with a random direction
 	void initialize() noexcept;
+
+	// normalizes the direction vector
+	void normalize() noexcept;
 
 private:
 	sf::CircleShape ball;
+	sf::Texture texture;
 
 	Paddle* paddleLeft;
 	Paddle* paddleRight;
 
 	sf::Vector2i windowSize;
 	int size;
+	float fullSize;
 	float speed;
 	sf::Color color;
 
-	sf::Vector2f velocity;
+	glm::vec2 direction;
 };

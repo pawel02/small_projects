@@ -49,6 +49,7 @@ source_group("Common"                     FILES ${COMMON})
 
 target_include_directories(${PROJECT_NAME} 
     PRIVATE "${PROJECT_SOURCE_DIR}/SFML/include"
+    PRIVATE "${PROJECT_SOURCE_DIR}/glm"
 )
 target_link_directories(${PROJECT_NAME}
     PRIVATE "${PROJECT_SOURCE_DIR}/SFML/build/lib/Debug"

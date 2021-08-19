@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include "../EventSystem/KeyboardEvent.hpp"
 #include "../Controller/Paddle.hpp"
+#include "../Controller/Ball.hpp"
 
 /*
 Starts the main game loop 
@@ -31,4 +32,7 @@ private:
 
 	Paddle paddleLeft;
 	Paddle paddleRight;
+
+	Ball ball;
+	bool hasGameStarted = false;
 };

@@ -3,11 +3,6 @@
 #include "../EventSystem/KeyboardEvent.hpp"
 #include "../common/bit.hpp"
 
-#define KEY_W    BIT(1)
-#define KEY_S    BIT(2)
-#define KEY_UP   BIT(3)
-#define KEY_DOWN BIT(4)
-
 /*
 Class which defines a paddle that can move up and down at the specified position
 */
@@ -21,8 +16,8 @@ public:
 		EventsManager* eventsManager, 
 		const float& speed,
 		const sf::Color& color,
-		char keyUp,
-		char keyDown) noexcept;
+		sf::Keyboard::Key keyUp,
+		sf::Keyboard::Key keyDown) noexcept;
 
 	~Paddle() noexcept;
 	
@@ -52,6 +47,6 @@ private:
 	float speed = 1.0f;
 
 	char key = 0x00;
-	char keyUp;
-	char keyDown;
+	sf::Keyboard::Key keyUp;
+	sf::Keyboard::Key keyDown;
 };

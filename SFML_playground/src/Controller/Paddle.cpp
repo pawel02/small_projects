@@ -11,8 +11,8 @@ Paddle::Paddle(
 	EventsManager* eventsManager, 
 	const float& speed,
 	const sf::Color& color,
-	char keyUp,
-	char keyDown
+	sf::Keyboard::Key keyUp,
+	sf::Keyboard::Key keyDown
 	) noexcept
 	
 	:windowSize{windowSize},
@@ -65,11 +65,11 @@ void Paddle::initialize() noexcept
 const sf::Drawable& Paddle::update(float deltaTime) noexcept
 {
 	// move the paddle up or down limiting it to the ceilings
-	if (key & keyUp)
+	if (key & BIT(0))
 	{
 		pos.y = std::max(pos.y - (speed * deltaTime), 5.0f);
 	}
-	else if (key & keyDown)
+	else if (key & BIT(1))
 	{
 		pos.y = std::min(pos.y + (speed * deltaTime), windowSize.y - (paddleSize.y + 5.0f));
 	}
@@ -80,54 +80,26 @@ const sf::Drawable& Paddle::update(float deltaTime) noexcept
 
 void Paddle::handlePressed(KeyPressedEvent* ev) noexcept
 {
-	switch(ev->getKeyCode())
+	const int keyCode = ev->getKeyCode();
+	if (keyCode == keyUp)
 	{
-		case 22:
-		{
-			key |= KEY_W;
-			break;
-		}
-		case 18:
-		{
-			key |= KEY_S;
-			break;
-		}
-		case 73:
-		{
-			key |= KEY_UP;
-			break;
-		}
-		case 74:
-		{
-			key |= KEY_DOWN;
-			break;
-		}
+		key |= BIT(0);
+	}
+	else if (keyCode == keyDown)
+	{
+		key |= BIT(1);
 	}
 }
 
 void Paddle::handleReleased(KeyReleasedEvent* ev) noexcept
 {
-	switch (ev->getKeyCode())
+	const int keyCode = ev->getKeyCode();
+	if (keyCode == keyUp)
 	{
-		case 22:
-		{
-			key ^= KEY_W;
-			break;
-		}
-		case 18:
-		{
-			key ^= KEY_S;
-			break;
-		}
-		case 73:
-		{
-			key ^= KEY_UP;
-			break;
-		}
-		case 74:
-		{
-			key ^= KEY_DOWN;
-			break;
-		}
+		key ^= BIT(0);
+	}
+	else if (keyCode == keyDown)
+	{
+		key ^= BIT(1);
 	}
 }

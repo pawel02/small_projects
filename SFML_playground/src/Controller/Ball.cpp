@@ -1,4 +1,5 @@
-#include <random>
+#include <stdlib.h>
+#include <time.h> 
 #include <cmath>
 #include <numeric>
 #include <iostream>
@@ -83,14 +84,25 @@ void Ball::initialize() noexcept
 
 
 	// give the ball random velocity
-	/*std::default_random_engine generator;
-	std::uniform_int_distribution<int> distribution(0, 360);
-	int angle = distribution(generator);
-	direction.x = std::cos(angle * (3.14 / 180));
-	direction.y = std::sin(direction.x);*/
+	srand(time(NULL));
+	int angle = rand() % 35;
+	int isRight = rand() % 2 + 1;
+	int isUp = rand() % 2 + 1;
+	if (isUp == 2)
+	{
+		angle = 360 - angle;
+	}
 
-	direction.x = -1.0;
-	direction.y = 0.0;
+	if (isRight == 2)
+	{
+		angle += 180;
+	}
+	
+	// make sure that the y angle is always small
+
+	direction.x = std::cos(angle * (3.14 / 180));
+	direction.y = std::sin(angle * (3.14 / 180));
+
 
 	direction = glm::normalize(direction);
 }

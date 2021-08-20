@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <chrono>
-
+#pragma comment (lib, "legacy_stdio_definitions.lib")
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include "../EventSystem/KeyboardEvent.hpp"
@@ -25,6 +25,9 @@ private:
 
 private:
 	sf::RenderWindow window;
+	sf::Font font;
+	sf::Text text;
+
 	EventsManager eventsManager;
 
 	sf::Clock clock;

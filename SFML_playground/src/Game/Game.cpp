@@ -42,7 +42,13 @@ void GameManager::initialize() noexcept
     window.setFramerateLimit(120.0f);
     currTime = clock.getElapsedTime().asMicroseconds();
 
-    // create the ball
+    if (!font.loadFromFile("../res/CHELON.ttf"))
+    {
+        std::cout << "Could not load the font\n";
+    }
+    text.setFont(font);
+    text.setCharacterSize(32);
+    text.setFillColor(sf::Color::White);
 }
 
 int GameManager::gameLoop() noexcept
@@ -95,21 +101,25 @@ int GameManager::gameLoop() noexcept
             if (ballData.playerWon == 0x01)
             {
                 isPlaying = false;
-                std::cout << "Player Left has won\n";
+                text.setString("Player Left has won!\n Press Space to restart.");
+                
                 ball.reset();
             }
             else if (ballData.playerWon == 0x02)
             {
                 isPlaying = false;
-                std::cout << "Player Right has won\n";
+                text.setString("Player Right has won!\n Press Space to restart.");
                 ball.reset();
             }
             else
             {
+                text.setString("");
                 window.draw(*ballData.drawable);
             }
         }
 
+        text.setPosition(window.getSize().x / 2 - (text.getLocalBounds().width / 2), window.getSize().y / 2 - (text.getCharacterSize() / 2));
+        window.draw(text);
 
         window.display();
     }

@@ -2,7 +2,6 @@
 #include <time.h> 
 #include <cmath>
 #include <numeric>
-#include <iostream>
 #include "Ball.hpp"
 #include "../common/bit.hpp"
 
@@ -30,6 +29,11 @@ Ball::~Ball() noexcept
 {
 }
 
+void Ball::reset() noexcept
+{
+	initialize();
+}
+
 const metaData& Ball::update(float deltaTime) noexcept
 {
 	// update the ball based on its current velocity
@@ -39,13 +43,24 @@ const metaData& Ball::update(float deltaTime) noexcept
 	};
 
 	// calculate collisions
+	PaddleInfo padLeft = paddleLeft->getPosAndSize();
+	PaddleInfo padRight = paddleRight->getPosAndSize();
+
+	char playerWon = 0x00;
 
 	// right side
-	if (ballPos.x + fullSize >= windowSize.x)
+	if (ballPos.x + fullSize >= windowSize.x - ((windowSize.x - padRight.position.x)))
 	{
-		ballPos.x = windowSize.x - fullSize;
-		// recalculate the direction (reflextion on that point)
+		ballPos.x = windowSize.x - ((windowSize.x - padRight.position.x)) - fullSize;
+		// recalculate the direction (reflection on that point)
 		direction = glm::normalize(glm::reflect(glm::normalize(glm::vec2(direction.x, direction.y)), glm::vec2(-1.0f, 0.0f)));
+
+		// check if the ball hit a paddle
+		if (ballPos.y + size <= padRight.position.y
+			|| ballPos.y + size >= padRight.position.y + padRight.size.y)
+		{
+			playerWon = 0x01;
+		}
 	}
 
 	// bottom
@@ -56,10 +71,16 @@ const metaData& Ball::update(float deltaTime) noexcept
 	}
 
 	// left
-	if (ballPos.x <= 0.0f)
+	if (ballPos.x <= padLeft.position.x + padLeft.size.x)
 	{
-		ballPos.x = 0.0f;
+		ballPos.x = padLeft.position.x + padLeft.size.x;
 		direction = glm::normalize(glm::reflect(glm::normalize(glm::vec2(direction.x, direction.y)), glm::vec2(1.0f, 0.0f)));
+
+		if (ballPos.y + size <= padLeft.position.y
+			|| ballPos.y + size >= padLeft.position.y + padLeft.size.y)
+		{
+			playerWon = 0x02;
+		}
 	}
 
 	// top
@@ -72,7 +93,7 @@ const metaData& Ball::update(float deltaTime) noexcept
 
 	return {
 		&ball,
-		0x00
+		playerWon
 	};
 }
 

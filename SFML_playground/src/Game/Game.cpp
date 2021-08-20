@@ -39,7 +39,7 @@ GameManager::~GameManager() noexcept
 
 void GameManager::initialize() noexcept
 {
-    window.setFramerateLimit(60.0f);
+    window.setFramerateLimit(120.0f);
     currTime = clock.getElapsedTime().asMicroseconds();
 
     // create the ball
@@ -65,7 +65,7 @@ int GameManager::gameLoop() noexcept
                     eventsManager.dispatch(event.type, std::make_shared<KeyPressedEvent>(event.key.code));
                     if (event.key.code == sf::Keyboard::Space)
                     {
-                        hasGameStarted = true;
+                        isPlaying = true;
                     }
                     break;
                 }
@@ -89,8 +89,27 @@ int GameManager::gameLoop() noexcept
 
         window.draw(paddleLeft.update(deltaTime));
         window.draw(paddleRight.update(deltaTime));
-        if (hasGameStarted)
-            window.draw(*ball.update(deltaTime).drawable);
+        if (isPlaying)
+        {
+            metaData ballData = ball.update(deltaTime);
+            if (ballData.playerWon == 0x01)
+            {
+                isPlaying = false;
+                std::cout << "Player Left has won\n";
+                ball.reset();
+            }
+            else if (ballData.playerWon == 0x02)
+            {
+                isPlaying = false;
+                std::cout << "Player Right has won\n";
+                ball.reset();
+            }
+            else
+            {
+                window.draw(*ballData.drawable);
+            }
+        }
+
 
         window.display();
     }

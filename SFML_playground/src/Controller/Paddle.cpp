@@ -1,7 +1,6 @@
 #include <memory>
 #include <algorithm>
 #include <vector>
-#include <iostream>
 #include "Paddle.hpp"
 
 Paddle::Paddle(
@@ -67,15 +66,24 @@ const sf::Drawable& Paddle::update(float deltaTime) noexcept
 	// move the paddle up or down limiting it to the ceilings
 	if (key & BIT(0))
 	{
-		pos.y = std::max(pos.y - (speed * deltaTime), 5.0f);
+		pos.y = std::max(pos.y - (speed * deltaTime), 0.0f);
 	}
 	else if (key & BIT(1))
 	{
-		pos.y = std::min(pos.y + (speed * deltaTime), windowSize.y - (paddleSize.y + 5.0f));
+		pos.y = std::min(pos.y + (speed * deltaTime), static_cast<float>(windowSize.y - paddleSize.y));
 	}
 
 	sprite.setPosition(pos);
 	return sprite;
+}
+
+const PaddleInfo& Paddle::getPosAndSize() const noexcept
+{
+	return
+	{
+		pos,
+		paddleSize
+	};
 }
 
 void Paddle::handlePressed(KeyPressedEvent* ev) noexcept

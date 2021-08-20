@@ -3,6 +3,12 @@
 #include "../EventSystem/KeyboardEvent.hpp"
 #include "../common/bit.hpp"
 
+struct PaddleInfo
+{
+	sf::Vector2f position;
+	sf::Vector2i size;
+};
+
 /*
 Class which defines a paddle that can move up and down at the specified position
 */
@@ -27,6 +33,8 @@ public:
 	checks for collisions
 	*/
 	const sf::Drawable& update(float deltaTime) noexcept;
+
+	const PaddleInfo& getPosAndSize() const noexcept;
 
 private:
 	void initialize() noexcept;

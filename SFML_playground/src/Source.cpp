@@ -2,6 +2,6 @@
 
 int main()
 {
-    GameManager game{ {800, 600} };
+    GameManager game{ {1200, 800} };
     return game.gameLoop();
 }

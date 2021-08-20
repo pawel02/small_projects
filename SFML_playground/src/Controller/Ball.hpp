@@ -28,15 +28,12 @@ public:
 	) noexcept;
 	~Ball() noexcept;
 
-
+	void reset() noexcept;
 	const metaData& update(float deltaTime) noexcept;
 
 private:
 	// initializes the ball in the middle of the screen with a random direction
 	void initialize() noexcept;
-
-	// normalizes the direction vector
-	void normalize() noexcept;
 
 private:
 	sf::CircleShape ball;

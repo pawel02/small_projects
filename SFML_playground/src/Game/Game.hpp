@@ -34,5 +34,5 @@ private:
 	Paddle paddleRight;
 
 	Ball ball;
-	bool hasGameStarted = false;
+	bool isPlaying = false;
 };
